@@ -1,9 +1,11 @@
 # Copyright 2017 Moohyeon Nam
 # Modified 2017-12-18
 
+import os
 import sqlite3
 import opml_handler
 import rss_handler
+import feedfilter as flt
 
 def add_source(item):
     con = sqlite3.connect("feed.db")
@@ -55,11 +57,13 @@ def get_feed():
     return feed
 
 if __name__=='__main__':
+    _filter = flt.get_filter('filter.txt')
     get_update()
     with open('test.html', 'w', encoding='utf-8') as ofs:
         for item in get_feed():
-            ofs.write("<p>{} - <a href={}>{}</a> - {}</p>".format(
-                item["date"], item["url"], item["title"], item["source"]))
+            if flt.filtering(item["title"], _filter):
+                ofs.write("<p>{} - <a href={}>{}</a> - {}</p>".format(
+                    item["date"], item["url"], item["title"], item["source"]))
 
 '''
 # Table schema
