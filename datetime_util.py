@@ -8,6 +8,8 @@ def extract(timestr):
         return timestr, "%a, %d %b %Y %H:%M:%S %z"
     elif re.search(r"\w+, \d+ \w+ \d+ \d+:\d+:\d+ \w+", timestr):
         return timestr, "%a, %d %b %Y %H:%M:%S %Z"
+    elif re.search(r"\d+-\d+-\d+ \d+:\d+:\d+.\d+", timestr):
+        return timestr, "%Y-%m-%d %H:%M:%S.%f"
     elif re.search(r"\d+:\d+", timestr):
         now = datetime.datetime.now().astimezone()
         return extract(now.strftime("%a, %d %b %Y " + timestr + ":%S %z"))
@@ -28,6 +30,7 @@ if __name__ == "__main__":
     test_set.append("Mon, 18 Dec 2017 18:00:00 GMT")
     test_set.append("00:39")
     test_set.append("2017.12.18")
+    test_set.append("2017-12-22 15:37:14.781591")
 
     for item in test_set:
         print(item)
