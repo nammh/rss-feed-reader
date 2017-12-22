@@ -14,3 +14,5 @@ The goal of this project is building a feed reader using python.
 - [ ] User friendly interface
 - [ ] Project.Prettify()
 - [ ] Dynamic web page
+- [ ] Heartbeat
+- [ ] Better file and directory structure... HOW?
