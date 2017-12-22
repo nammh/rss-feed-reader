@@ -3,8 +3,10 @@
 
 import os
 import sqlite3
+import datetime
 import opml_handler
 import rss_handler
+import datetime_util
 import feedfilter as flt
 
 def add_source(item):
@@ -27,6 +29,8 @@ def show_sources():
     con.close()
 
 def get_update():
+    with open('last.txt', 'r') as f:
+        last = datetime_util.parse(f.read())
     con = sqlite3.connect("feed.db")
     cur = con.cursor()
     cur.execute("select url from feed;")
@@ -35,14 +39,18 @@ def get_update():
         for item in rss_handler.getArticle(feed[0]):
             title, url, description, date, source = item
             try:
-                cur.execute("insert into articles values (?, ?, ?, ?, ?)",
-                        (url, title, description, date, source))
+                if date > last:
+                    cur.execute("insert into articles values (?, ?, ?, ?, ?)",
+                            (url, title, description, date, source))
             except sqlite3.IntegrityError:
                 print("get_update(): sqlite3.IntegrityError")
                 print(item)
                 continue
     con.commit()
     con.close()
+    with open('last.txt', 'w') as f:
+        f.write(str(datetime.datetime.now()))
+
 
 def get_feed():
     feed = []
