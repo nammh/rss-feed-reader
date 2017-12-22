@@ -5,8 +5,12 @@ import requests
 from bs4 import BeautifulSoup
 
 def get(url):
-    req = requests.get(url)
-    return req.text
+    try:
+        req = requests.get(url)
+        return req.text
+    except requests.exceptions.ConnectionError:
+        print(url)
+        return ""
 
 def findrss(url):
     soup = BeautifulSoup(get(url), "html.parser")
