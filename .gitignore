@@ -4,6 +4,7 @@ Lib
 Scripts
 tcl
 *.db
+*.db-journal
 *.opml
 *.txt
 *.json
