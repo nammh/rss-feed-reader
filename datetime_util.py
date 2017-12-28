@@ -8,6 +8,10 @@ def extract(timestr):
         return timestr, "%a, %d %b %Y %H:%M:%S %z"
     elif re.search(r"\w+, \d+ \w+ \d+ \d+:\d+:\d+ \w+", timestr):
         return timestr, "%a, %d %b %Y %H:%M:%S %Z"
+    elif re.search(r"\d+-\d+-\d+ \d+:\d+:\d+.\d+\+\d+:\d+", timestr):
+        pos = timestr.find('+')
+        timestr = timestr[:pos]
+        return timestr, "%Y-%m-%d %H:%M:%S.%f"
     elif re.search(r"\d+-\d+-\d+ \d+:\d+:\d+.\d+", timestr):
         return timestr, "%Y-%m-%d %H:%M:%S.%f"
     elif re.search(r"\d+:\d+", timestr):
