@@ -9,7 +9,7 @@ import operator
 import datetime_util
 import opml_handler
 
-def getArticle(url):
+def getArticle(url, src_id):
     soup = BeautifulSoup(wh.get(url), "xml")
     articles = []
     for item in soup.find_all("item"):
@@ -18,7 +18,7 @@ def getArticle(url):
                             item.link.text,
                             item.description.text,
                             datetime_util.parse(item.pubDate.text),
-                            soup.channel.title.text
+                            src_id
                             ))
         except AttributeError:
             print("AttributeError: " + soup.channel.title.text)
